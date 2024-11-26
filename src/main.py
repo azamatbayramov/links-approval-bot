@@ -10,7 +10,7 @@ from database.models.chat_join_record import (
     UserModel,
     ChatInviteLinkModel,
 )
-from src.config import LOG_LEVEL, LOG_FORMAT
+from config import LOG_LEVEL, LOG_FORMAT
 
 logging.basicConfig(level=LOG_LEVEL, format=LOG_FORMAT)
 
