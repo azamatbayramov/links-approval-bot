@@ -27,7 +27,7 @@ class ChatInviteLinkModel(BaseModel):
 class ChatJoinRecord(Document):
     chat: ChatModel
     user: UserModel
-    chat_invite_link: ChatInviteLinkModel
+    chat_invite_link: ChatInviteLinkModel | None = None
     joined_at: datetime
 
     class Settings:
