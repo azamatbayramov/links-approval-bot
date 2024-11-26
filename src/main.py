@@ -48,14 +48,25 @@ async def chat_join_request_handler(request: ChatJoinRequest) -> None:
 
 @dp.message(Command("export"))
 async def start_handler(message: Message):
+    logger.info(f"User {message.from_user.id} send /export command")
+
     if message.from_user.username not in BOT_ADMIN_USERNAMES:
+        logger.info(f"User {message.from_user.id} is not allowed")
         return
+
+    logger.info(f"User {message.from_user.id} is allowed")
 
     exporter = Exporter()
 
+    logger.info("Exporting documents")
+
     await exporter.export()
 
+    logger.info(f"Sending documents to user {message.from_user.id}")
+
     await message.answer_document(FSInputFile(exporter.get_filename()))
+
+    logger.info("Deleting exported documents")
 
     await exporter.delete()
 
