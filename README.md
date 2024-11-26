@@ -12,5 +12,9 @@ Bot automatically approve all chat join requests and save inforamation about joi
 
 ### How to launch application
 
-1. Copy `.env-template` as `.env` and fill it with bot token and allowed bot admins (who can export)
+1. Copy `.env-template` as `.env` and fill it with bot token and allowed bot admins usernames (who can export)
 2. Start bot using `docker compose up --build -d`
+
+### How to export
+- Send `/export` command to the bot
+- Bot will send you `csv` file, if your username is in allowed bot admins usernames
