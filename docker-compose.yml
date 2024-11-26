@@ -1,0 +1,36 @@
+volumes:
+  db_data:
+
+networks:
+  app_network:
+    driver: bridge
+
+services:
+  mongodb:
+    image: mongo:7-jammy
+    volumes:
+      - db_data:/data/db
+    networks:
+      - app_network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+    restart: unless-stopped
+
+  bot:
+    build:
+      context: .
+    networks:
+      - app_network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+    restart: unless-stopped
+    env_file:
+      - .env
+    depends_on:
+      - mongodb
