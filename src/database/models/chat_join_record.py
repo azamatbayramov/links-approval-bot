@@ -29,3 +29,6 @@ class ChatJoinRecord(Document):
     user: UserModel
     chat_invite_link: ChatInviteLinkModel
     joined_at: datetime
+
+    class Settings:
+        name = "chat_join_records"
