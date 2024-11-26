@@ -3,9 +3,10 @@ import logging
 from datetime import datetime
 
 from aiogram import Dispatcher, Bot
-from aiogram.types import ChatJoinRequest
+from aiogram.filters import Command
+from aiogram.types import ChatJoinRequest, Message, FSInputFile
 
-from config import LOG_LEVEL, LOG_FORMAT, BOT_TOKEN
+from config import LOG_LEVEL, LOG_FORMAT, BOT_TOKEN, BOT_ADMIN_USERNAMES
 from database.db import init_db
 from database.models.chat_join_record import (
     ChatJoinRecord,
@@ -13,6 +14,7 @@ from database.models.chat_join_record import (
     UserModel,
     ChatInviteLinkModel,
 )
+from export.exporter import Exporter
 
 logging.basicConfig(level=LOG_LEVEL, format=LOG_FORMAT)
 
@@ -43,6 +45,19 @@ async def chat_join_request_handler(request: ChatJoinRequest) -> None:
 
     await new_record.insert()
 
+
+@dp.message(Command("export"))
+async def start_handler(message: Message):
+    if message.from_user.username not in BOT_ADMIN_USERNAMES:
+        return
+
+    exporter = Exporter()
+
+    await exporter.export()
+
+    await message.answer_document(FSInputFile(exporter.get_filename()))
+
+    await exporter.delete()
 
 
 async def main():
